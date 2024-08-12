@@ -29,7 +29,7 @@ pipeline {
                     sh """
                         curl -u${JFROG_USER}:${JFROG_PASSWORD} \
                         -T target/${APP_NAME}-${POM_VERSION}.jar \
-                        http://172.234.203.14:8081/artifactory/geolocation/${APP_NAME}-${POM_VERSION}.jar
+                        http://54.234.173.83:8081/artifactory/geolocation/${APP_NAME}-${POM_VERSION}.jar
                     """
                 }
             }
