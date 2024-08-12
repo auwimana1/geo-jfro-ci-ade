@@ -15,17 +15,30 @@ pipeline {
                 sh 'ls target'
             }
         }
-       stage('PUSH JFROG') {   
+       pipeline {
+    agent any
+    environment {
+        JFROG_USER = credentials('jfrog-username')  // assuming you use Jenkins credentials
+        JFROG_PASSWORD = credentials('jfrog-password')
+    }
+    stages {
+        stage('PUSH JFROG') {
             steps {
-                script{
-                    // install pipeline-utility-steps plugin for the ReadMavenPom method
+                script {
                     def mavenPom = readMavenPom file: 'pom.xml'
-                    POM_VERSION = "${mavenPom.version}"
-                    APP_NAME = "${mavenPom.name}"
-                    echo "${POM_VERSION}"
-                    echo "${APP_NAME}"
-                    sh "curl -u${JFROG_USER}:${JFROG_PASSWORD} -T target/${APP_NAME}-${POM_VERSION}.jar http://172.234.203.14:8081/artifactory/geolocation/${APP_NAME}-${POM_VERSION}.jar"
-                } 
+                    def POM_VERSION = mavenPom.version
+                    def APP_NAME = mavenPom.name
+                    echo "Version: ${POM_VERSION}"
+                    echo "App Name: ${APP_NAME}"
+                    
+                    // Use environment variables securely
+                    sh """
+                        curl -u${JFROG_USER}:${JFROG_PASSWORD} \
+                        -T target/${APP_NAME}-${POM_VERSION}.jar \
+                        http://172.234.203.14:8081/artifactory/geolocation/${APP_NAME}-${POM_VERSION}.jar
+                    """
+                }
             }
-        }    	    
+        }
+    }
 }
