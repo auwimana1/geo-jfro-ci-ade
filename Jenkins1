@@ -15,7 +15,7 @@ pipeline {
                 sh 'ls target'
             }
         }
-        stage('PUSH JFROG') {   
+       stage('PUSH JFROG') {   
             steps {
                 script{
                     // install pipeline-utility-steps plugin for the ReadMavenPom method
@@ -28,5 +28,3 @@ pipeline {
                 } 
             }
         }    	    
-    }
-}
