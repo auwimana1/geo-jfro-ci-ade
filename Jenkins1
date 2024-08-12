@@ -4,10 +4,7 @@ pipeline {
         maven 'M2_HOME'
         jfrog 'Jfrog remote cli'
     }
-    environment {
-        JFROG_USER = credentials('jfrog-username')  // assuming you use Jenkins credentials
-        JFROG_PASSWORD = credentials('jfrog-password')
-    }
+    
     triggers {
         pollSCM('* * * * *')
     }
